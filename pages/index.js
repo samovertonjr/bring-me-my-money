@@ -1,7 +1,7 @@
 import Head from "next/head";
-import fetch from "isomorphic-fetch";
+import fetch from "isomorphic-unfetch";
 
-function Home({ stars }) {
+function Home({ purchases }) {
   return (
     <div className="container">
       <Head>
@@ -10,19 +10,23 @@ function Home({ stars }) {
       </Head>
 
       <main>
-        <h1 className="title">
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+        <h1 className="title">Test</h1>
 
         <p className="description">
           Get started by editing <code>pages/index.js</code>
         </p>
 
         <div className="grid">
-          <div href="https://nextjs.org/docs" className="card">
-            <h3>All Purchases</h3>
-            {stars}
-          </div>
+          <h3>All Purchases</h3>
+          <ul>
+            {purchases.map(purchase => {
+              return (
+                <li key={purchase.id}>
+                  {purchase.name}, ${purchase.price}
+                </li>
+              );
+            })}
+          </ul>
         </div>
       </main>
 
@@ -181,10 +185,33 @@ function Home({ stars }) {
   );
 }
 
+const ALL_PURCHASES_QUERY = `
+  query GetAllPurchases {
+    purchases {
+      name
+      price
+      id
+      user {
+        first_name
+        last_name
+      }
+    }
+  }
+`;
+
 Home.getInitialProps = async ctx => {
-  const res = await fetch("https://api.github.com/repos/zeit/next.js");
+  const res = await fetch("https://jw-hasura-demo.herokuapp.com/v1/graphql", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-hasura-admin-secret": "WMQ6Zmw7PbuYMwXUAhR6ppNjyr89gFZy"
+    },
+    body: JSON.stringify({ query: ALL_PURCHASES_QUERY })
+  });
+
   const json = await res.json();
-  return { stars: json.stargazers_count };
+  console.log("🐸", json);
+  return json.data;
 };
 
 export default Home;
