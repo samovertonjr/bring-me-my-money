@@ -3,7 +3,7 @@ module.exports = {
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-/* GraphQL */ `type AggregatePost {
+/* GraphQL */ `type AggregatePurchase {
   count: Int!
 }
 
@@ -15,15 +15,17 @@ type BatchPayload {
   count: Long!
 }
 
+scalar DateTime
+
 scalar Long
 
 type Mutation {
-  createPost(data: PostCreateInput!): Post!
-  updatePost(data: PostUpdateInput!, where: PostWhereUniqueInput!): Post
-  updateManyPosts(data: PostUpdateManyMutationInput!, where: PostWhereInput): BatchPayload!
-  upsertPost(where: PostWhereUniqueInput!, create: PostCreateInput!, update: PostUpdateInput!): Post!
-  deletePost(where: PostWhereUniqueInput!): Post
-  deleteManyPosts(where: PostWhereInput): BatchPayload!
+  createPurchase(data: PurchaseCreateInput!): Purchase!
+  updatePurchase(data: PurchaseUpdateInput!, where: PurchaseWhereUniqueInput!): Purchase
+  updateManyPurchases(data: PurchaseUpdateManyMutationInput!, where: PurchaseWhereInput): BatchPayload!
+  upsertPurchase(where: PurchaseWhereUniqueInput!, create: PurchaseCreateInput!, update: PurchaseUpdateInput!): Purchase!
+  deletePurchase(where: PurchaseWhereUniqueInput!): Purchase
+  deleteManyPurchases(where: PurchaseWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -49,58 +51,64 @@ type PageInfo {
   endCursor: String
 }
 
-type Post {
+type Purchase {
   id: ID!
   title: String!
-  published: Boolean!
-  author: User
+  cost: Int!
+  purchasedOn: DateTime!
+  user: User
 }
 
-type PostConnection {
+type PurchaseConnection {
   pageInfo: PageInfo!
-  edges: [PostEdge]!
-  aggregate: AggregatePost!
+  edges: [PurchaseEdge]!
+  aggregate: AggregatePurchase!
 }
 
-input PostCreateInput {
+input PurchaseCreateInput {
   id: ID
   title: String!
-  published: Boolean
-  author: UserCreateOneWithoutPostsInput
+  cost: Int!
+  purchasedOn: DateTime!
+  user: UserCreateOneWithoutPurchasesInput
 }
 
-input PostCreateManyWithoutAuthorInput {
-  create: [PostCreateWithoutAuthorInput!]
-  connect: [PostWhereUniqueInput!]
+input PurchaseCreateManyWithoutUserInput {
+  create: [PurchaseCreateWithoutUserInput!]
+  connect: [PurchaseWhereUniqueInput!]
 }
 
-input PostCreateWithoutAuthorInput {
+input PurchaseCreateWithoutUserInput {
   id: ID
   title: String!
-  published: Boolean
+  cost: Int!
+  purchasedOn: DateTime!
 }
 
-type PostEdge {
-  node: Post!
+type PurchaseEdge {
+  node: Purchase!
   cursor: String!
 }
 
-enum PostOrderByInput {
+enum PurchaseOrderByInput {
   id_ASC
   id_DESC
   title_ASC
   title_DESC
-  published_ASC
-  published_DESC
+  cost_ASC
+  cost_DESC
+  purchasedOn_ASC
+  purchasedOn_DESC
 }
 
-type PostPreviousValues {
+type PurchasePreviousValues {
   id: ID!
   title: String!
-  published: Boolean!
+  cost: Int!
+  purchasedOn: DateTime!
 }
 
-input PostScalarWhereInput {
+input PurchaseScalarWhereInput {
   id: ID
   id_not: ID
   id_in: [ID!]
@@ -129,81 +137,99 @@ input PostScalarWhereInput {
   title_not_starts_with: String
   title_ends_with: String
   title_not_ends_with: String
-  published: Boolean
-  published_not: Boolean
-  AND: [PostScalarWhereInput!]
-  OR: [PostScalarWhereInput!]
-  NOT: [PostScalarWhereInput!]
+  cost: Int
+  cost_not: Int
+  cost_in: [Int!]
+  cost_not_in: [Int!]
+  cost_lt: Int
+  cost_lte: Int
+  cost_gt: Int
+  cost_gte: Int
+  purchasedOn: DateTime
+  purchasedOn_not: DateTime
+  purchasedOn_in: [DateTime!]
+  purchasedOn_not_in: [DateTime!]
+  purchasedOn_lt: DateTime
+  purchasedOn_lte: DateTime
+  purchasedOn_gt: DateTime
+  purchasedOn_gte: DateTime
+  AND: [PurchaseScalarWhereInput!]
+  OR: [PurchaseScalarWhereInput!]
+  NOT: [PurchaseScalarWhereInput!]
 }
 
-type PostSubscriptionPayload {
+type PurchaseSubscriptionPayload {
   mutation: MutationType!
-  node: Post
+  node: Purchase
   updatedFields: [String!]
-  previousValues: PostPreviousValues
+  previousValues: PurchasePreviousValues
 }
 
-input PostSubscriptionWhereInput {
+input PurchaseSubscriptionWhereInput {
   mutation_in: [MutationType!]
   updatedFields_contains: String
   updatedFields_contains_every: [String!]
   updatedFields_contains_some: [String!]
-  node: PostWhereInput
-  AND: [PostSubscriptionWhereInput!]
-  OR: [PostSubscriptionWhereInput!]
-  NOT: [PostSubscriptionWhereInput!]
+  node: PurchaseWhereInput
+  AND: [PurchaseSubscriptionWhereInput!]
+  OR: [PurchaseSubscriptionWhereInput!]
+  NOT: [PurchaseSubscriptionWhereInput!]
 }
 
-input PostUpdateInput {
+input PurchaseUpdateInput {
   title: String
-  published: Boolean
-  author: UserUpdateOneWithoutPostsInput
+  cost: Int
+  purchasedOn: DateTime
+  user: UserUpdateOneWithoutPurchasesInput
 }
 
-input PostUpdateManyDataInput {
+input PurchaseUpdateManyDataInput {
   title: String
-  published: Boolean
+  cost: Int
+  purchasedOn: DateTime
 }
 
-input PostUpdateManyMutationInput {
+input PurchaseUpdateManyMutationInput {
   title: String
-  published: Boolean
+  cost: Int
+  purchasedOn: DateTime
 }
 
-input PostUpdateManyWithoutAuthorInput {
-  create: [PostCreateWithoutAuthorInput!]
-  delete: [PostWhereUniqueInput!]
-  connect: [PostWhereUniqueInput!]
-  set: [PostWhereUniqueInput!]
-  disconnect: [PostWhereUniqueInput!]
-  update: [PostUpdateWithWhereUniqueWithoutAuthorInput!]
-  upsert: [PostUpsertWithWhereUniqueWithoutAuthorInput!]
-  deleteMany: [PostScalarWhereInput!]
-  updateMany: [PostUpdateManyWithWhereNestedInput!]
+input PurchaseUpdateManyWithoutUserInput {
+  create: [PurchaseCreateWithoutUserInput!]
+  delete: [PurchaseWhereUniqueInput!]
+  connect: [PurchaseWhereUniqueInput!]
+  set: [PurchaseWhereUniqueInput!]
+  disconnect: [PurchaseWhereUniqueInput!]
+  update: [PurchaseUpdateWithWhereUniqueWithoutUserInput!]
+  upsert: [PurchaseUpsertWithWhereUniqueWithoutUserInput!]
+  deleteMany: [PurchaseScalarWhereInput!]
+  updateMany: [PurchaseUpdateManyWithWhereNestedInput!]
 }
 
-input PostUpdateManyWithWhereNestedInput {
-  where: PostScalarWhereInput!
-  data: PostUpdateManyDataInput!
+input PurchaseUpdateManyWithWhereNestedInput {
+  where: PurchaseScalarWhereInput!
+  data: PurchaseUpdateManyDataInput!
 }
 
-input PostUpdateWithoutAuthorDataInput {
+input PurchaseUpdateWithoutUserDataInput {
   title: String
-  published: Boolean
+  cost: Int
+  purchasedOn: DateTime
 }
 
-input PostUpdateWithWhereUniqueWithoutAuthorInput {
-  where: PostWhereUniqueInput!
-  data: PostUpdateWithoutAuthorDataInput!
+input PurchaseUpdateWithWhereUniqueWithoutUserInput {
+  where: PurchaseWhereUniqueInput!
+  data: PurchaseUpdateWithoutUserDataInput!
 }
 
-input PostUpsertWithWhereUniqueWithoutAuthorInput {
-  where: PostWhereUniqueInput!
-  update: PostUpdateWithoutAuthorDataInput!
-  create: PostCreateWithoutAuthorInput!
+input PurchaseUpsertWithWhereUniqueWithoutUserInput {
+  where: PurchaseWhereUniqueInput!
+  update: PurchaseUpdateWithoutUserDataInput!
+  create: PurchaseCreateWithoutUserInput!
 }
 
-input PostWhereInput {
+input PurchaseWhereInput {
   id: ID
   id_not: ID
   id_in: [ID!]
@@ -232,22 +258,36 @@ input PostWhereInput {
   title_not_starts_with: String
   title_ends_with: String
   title_not_ends_with: String
-  published: Boolean
-  published_not: Boolean
-  author: UserWhereInput
-  AND: [PostWhereInput!]
-  OR: [PostWhereInput!]
-  NOT: [PostWhereInput!]
+  cost: Int
+  cost_not: Int
+  cost_in: [Int!]
+  cost_not_in: [Int!]
+  cost_lt: Int
+  cost_lte: Int
+  cost_gt: Int
+  cost_gte: Int
+  purchasedOn: DateTime
+  purchasedOn_not: DateTime
+  purchasedOn_in: [DateTime!]
+  purchasedOn_not_in: [DateTime!]
+  purchasedOn_lt: DateTime
+  purchasedOn_lte: DateTime
+  purchasedOn_gt: DateTime
+  purchasedOn_gte: DateTime
+  user: UserWhereInput
+  AND: [PurchaseWhereInput!]
+  OR: [PurchaseWhereInput!]
+  NOT: [PurchaseWhereInput!]
 }
 
-input PostWhereUniqueInput {
+input PurchaseWhereUniqueInput {
   id: ID
 }
 
 type Query {
-  post(where: PostWhereUniqueInput!): Post
-  posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post]!
-  postsConnection(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PostConnection!
+  purchase(where: PurchaseWhereUniqueInput!): Purchase
+  purchases(where: PurchaseWhereInput, orderBy: PurchaseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Purchase]!
+  purchasesConnection(where: PurchaseWhereInput, orderBy: PurchaseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PurchaseConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -255,15 +295,16 @@ type Query {
 }
 
 type Subscription {
-  post(where: PostSubscriptionWhereInput): PostSubscriptionPayload
+  purchase(where: PurchaseSubscriptionWhereInput): PurchaseSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 
 type User {
   id: ID!
-  email: String
-  name: String!
-  posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
+  email: String!
+  firstName: String
+  lastName: String
+  purchases(where: PurchaseWhereInput, orderBy: PurchaseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Purchase!]
 }
 
 type UserConnection {
@@ -274,20 +315,22 @@ type UserConnection {
 
 input UserCreateInput {
   id: ID
-  email: String
-  name: String!
-  posts: PostCreateManyWithoutAuthorInput
+  email: String!
+  firstName: String
+  lastName: String
+  purchases: PurchaseCreateManyWithoutUserInput
 }
 
-input UserCreateOneWithoutPostsInput {
-  create: UserCreateWithoutPostsInput
+input UserCreateOneWithoutPurchasesInput {
+  create: UserCreateWithoutPurchasesInput
   connect: UserWhereUniqueInput
 }
 
-input UserCreateWithoutPostsInput {
+input UserCreateWithoutPurchasesInput {
   id: ID
-  email: String
-  name: String!
+  email: String!
+  firstName: String
+  lastName: String
 }
 
 type UserEdge {
@@ -300,14 +343,17 @@ enum UserOrderByInput {
   id_DESC
   email_ASC
   email_DESC
-  name_ASC
-  name_DESC
+  firstName_ASC
+  firstName_DESC
+  lastName_ASC
+  lastName_DESC
 }
 
 type UserPreviousValues {
   id: ID!
-  email: String
-  name: String!
+  email: String!
+  firstName: String
+  lastName: String
 }
 
 type UserSubscriptionPayload {
@@ -330,32 +376,35 @@ input UserSubscriptionWhereInput {
 
 input UserUpdateInput {
   email: String
-  name: String
-  posts: PostUpdateManyWithoutAuthorInput
+  firstName: String
+  lastName: String
+  purchases: PurchaseUpdateManyWithoutUserInput
 }
 
 input UserUpdateManyMutationInput {
   email: String
-  name: String
+  firstName: String
+  lastName: String
 }
 
-input UserUpdateOneWithoutPostsInput {
-  create: UserCreateWithoutPostsInput
-  update: UserUpdateWithoutPostsDataInput
-  upsert: UserUpsertWithoutPostsInput
+input UserUpdateOneWithoutPurchasesInput {
+  create: UserCreateWithoutPurchasesInput
+  update: UserUpdateWithoutPurchasesDataInput
+  upsert: UserUpsertWithoutPurchasesInput
   delete: Boolean
   disconnect: Boolean
   connect: UserWhereUniqueInput
 }
 
-input UserUpdateWithoutPostsDataInput {
+input UserUpdateWithoutPurchasesDataInput {
   email: String
-  name: String
+  firstName: String
+  lastName: String
 }
 
-input UserUpsertWithoutPostsInput {
-  update: UserUpdateWithoutPostsDataInput!
-  create: UserCreateWithoutPostsInput!
+input UserUpsertWithoutPurchasesInput {
+  update: UserUpdateWithoutPurchasesDataInput!
+  create: UserCreateWithoutPurchasesInput!
 }
 
 input UserWhereInput {
@@ -387,23 +436,37 @@ input UserWhereInput {
   email_not_starts_with: String
   email_ends_with: String
   email_not_ends_with: String
-  name: String
-  name_not: String
-  name_in: [String!]
-  name_not_in: [String!]
-  name_lt: String
-  name_lte: String
-  name_gt: String
-  name_gte: String
-  name_contains: String
-  name_not_contains: String
-  name_starts_with: String
-  name_not_starts_with: String
-  name_ends_with: String
-  name_not_ends_with: String
-  posts_every: PostWhereInput
-  posts_some: PostWhereInput
-  posts_none: PostWhereInput
+  firstName: String
+  firstName_not: String
+  firstName_in: [String!]
+  firstName_not_in: [String!]
+  firstName_lt: String
+  firstName_lte: String
+  firstName_gt: String
+  firstName_gte: String
+  firstName_contains: String
+  firstName_not_contains: String
+  firstName_starts_with: String
+  firstName_not_starts_with: String
+  firstName_ends_with: String
+  firstName_not_ends_with: String
+  lastName: String
+  lastName_not: String
+  lastName_in: [String!]
+  lastName_not_in: [String!]
+  lastName_lt: String
+  lastName_lte: String
+  lastName_gt: String
+  lastName_gte: String
+  lastName_contains: String
+  lastName_not_contains: String
+  lastName_starts_with: String
+  lastName_not_starts_with: String
+  lastName_ends_with: String
+  lastName_not_ends_with: String
+  purchases_every: PurchaseWhereInput
+  purchases_some: PurchaseWhereInput
+  purchases_none: PurchaseWhereInput
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]

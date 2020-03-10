@@ -16,7 +16,7 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
 export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
-  post: (where?: PostWhereInput) => Promise<boolean>;
+  purchase: (where?: PurchaseWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
 }
 
@@ -39,25 +39,25 @@ export interface Prisma {
    * Queries
    */
 
-  post: (where: PostWhereUniqueInput) => PostNullablePromise;
-  posts: (args?: {
-    where?: PostWhereInput;
-    orderBy?: PostOrderByInput;
+  purchase: (where: PurchaseWhereUniqueInput) => PurchaseNullablePromise;
+  purchases: (args?: {
+    where?: PurchaseWhereInput;
+    orderBy?: PurchaseOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => FragmentableArray<Post>;
-  postsConnection: (args?: {
-    where?: PostWhereInput;
-    orderBy?: PostOrderByInput;
+  }) => FragmentableArray<Purchase>;
+  purchasesConnection: (args?: {
+    where?: PurchaseWhereInput;
+    orderBy?: PurchaseOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => PostConnectionPromise;
+  }) => PurchaseConnectionPromise;
   user: (where: UserWhereUniqueInput) => UserNullablePromise;
   users: (args?: {
     where?: UserWhereInput;
@@ -83,22 +83,22 @@ export interface Prisma {
    * Mutations
    */
 
-  createPost: (data: PostCreateInput) => PostPromise;
-  updatePost: (args: {
-    data: PostUpdateInput;
-    where: PostWhereUniqueInput;
-  }) => PostPromise;
-  updateManyPosts: (args: {
-    data: PostUpdateManyMutationInput;
-    where?: PostWhereInput;
+  createPurchase: (data: PurchaseCreateInput) => PurchasePromise;
+  updatePurchase: (args: {
+    data: PurchaseUpdateInput;
+    where: PurchaseWhereUniqueInput;
+  }) => PurchasePromise;
+  updateManyPurchases: (args: {
+    data: PurchaseUpdateManyMutationInput;
+    where?: PurchaseWhereInput;
   }) => BatchPayloadPromise;
-  upsertPost: (args: {
-    where: PostWhereUniqueInput;
-    create: PostCreateInput;
-    update: PostUpdateInput;
-  }) => PostPromise;
-  deletePost: (where: PostWhereUniqueInput) => PostPromise;
-  deleteManyPosts: (where?: PostWhereInput) => BatchPayloadPromise;
+  upsertPurchase: (args: {
+    where: PurchaseWhereUniqueInput;
+    create: PurchaseCreateInput;
+    update: PurchaseUpdateInput;
+  }) => PurchasePromise;
+  deletePurchase: (where: PurchaseWhereUniqueInput) => PurchasePromise;
+  deleteManyPurchases: (where?: PurchaseWhereInput) => BatchPayloadPromise;
   createUser: (data: UserCreateInput) => UserPromise;
   updateUser: (args: {
     data: UserUpdateInput;
@@ -124,9 +124,9 @@ export interface Prisma {
 }
 
 export interface Subscription {
-  post: (
-    where?: PostSubscriptionWhereInput
-  ) => PostSubscriptionPayloadSubscription;
+  purchase: (
+    where?: PurchaseSubscriptionWhereInput
+  ) => PurchaseSubscriptionPayloadSubscription;
   user: (
     where?: UserSubscriptionWhereInput
   ) => UserSubscriptionPayloadSubscription;
@@ -140,29 +140,33 @@ export interface ClientConstructor<T> {
  * Types
  */
 
-export type PostOrderByInput =
+export type PurchaseOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "title_ASC"
   | "title_DESC"
-  | "published_ASC"
-  | "published_DESC";
+  | "cost_ASC"
+  | "cost_DESC"
+  | "purchasedOn_ASC"
+  | "purchasedOn_DESC";
 
 export type UserOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "email_ASC"
   | "email_DESC"
-  | "name_ASC"
-  | "name_DESC";
+  | "firstName_ASC"
+  | "firstName_DESC"
+  | "lastName_ASC"
+  | "lastName_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export type PostWhereUniqueInput = AtLeastOne<{
+export type PurchaseWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
-export interface PostWhereInput {
+export interface PurchaseWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -191,12 +195,26 @@ export interface PostWhereInput {
   title_not_starts_with?: Maybe<String>;
   title_ends_with?: Maybe<String>;
   title_not_ends_with?: Maybe<String>;
-  published?: Maybe<Boolean>;
-  published_not?: Maybe<Boolean>;
-  author?: Maybe<UserWhereInput>;
-  AND?: Maybe<PostWhereInput[] | PostWhereInput>;
-  OR?: Maybe<PostWhereInput[] | PostWhereInput>;
-  NOT?: Maybe<PostWhereInput[] | PostWhereInput>;
+  cost?: Maybe<Int>;
+  cost_not?: Maybe<Int>;
+  cost_in?: Maybe<Int[] | Int>;
+  cost_not_in?: Maybe<Int[] | Int>;
+  cost_lt?: Maybe<Int>;
+  cost_lte?: Maybe<Int>;
+  cost_gt?: Maybe<Int>;
+  cost_gte?: Maybe<Int>;
+  purchasedOn?: Maybe<DateTimeInput>;
+  purchasedOn_not?: Maybe<DateTimeInput>;
+  purchasedOn_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  purchasedOn_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  purchasedOn_lt?: Maybe<DateTimeInput>;
+  purchasedOn_lte?: Maybe<DateTimeInput>;
+  purchasedOn_gt?: Maybe<DateTimeInput>;
+  purchasedOn_gte?: Maybe<DateTimeInput>;
+  user?: Maybe<UserWhereInput>;
+  AND?: Maybe<PurchaseWhereInput[] | PurchaseWhereInput>;
+  OR?: Maybe<PurchaseWhereInput[] | PurchaseWhereInput>;
+  NOT?: Maybe<PurchaseWhereInput[] | PurchaseWhereInput>;
 }
 
 export interface UserWhereInput {
@@ -228,23 +246,37 @@ export interface UserWhereInput {
   email_not_starts_with?: Maybe<String>;
   email_ends_with?: Maybe<String>;
   email_not_ends_with?: Maybe<String>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  posts_every?: Maybe<PostWhereInput>;
-  posts_some?: Maybe<PostWhereInput>;
-  posts_none?: Maybe<PostWhereInput>;
+  firstName?: Maybe<String>;
+  firstName_not?: Maybe<String>;
+  firstName_in?: Maybe<String[] | String>;
+  firstName_not_in?: Maybe<String[] | String>;
+  firstName_lt?: Maybe<String>;
+  firstName_lte?: Maybe<String>;
+  firstName_gt?: Maybe<String>;
+  firstName_gte?: Maybe<String>;
+  firstName_contains?: Maybe<String>;
+  firstName_not_contains?: Maybe<String>;
+  firstName_starts_with?: Maybe<String>;
+  firstName_not_starts_with?: Maybe<String>;
+  firstName_ends_with?: Maybe<String>;
+  firstName_not_ends_with?: Maybe<String>;
+  lastName?: Maybe<String>;
+  lastName_not?: Maybe<String>;
+  lastName_in?: Maybe<String[] | String>;
+  lastName_not_in?: Maybe<String[] | String>;
+  lastName_lt?: Maybe<String>;
+  lastName_lte?: Maybe<String>;
+  lastName_gt?: Maybe<String>;
+  lastName_gte?: Maybe<String>;
+  lastName_contains?: Maybe<String>;
+  lastName_not_contains?: Maybe<String>;
+  lastName_starts_with?: Maybe<String>;
+  lastName_not_starts_with?: Maybe<String>;
+  lastName_ends_with?: Maybe<String>;
+  lastName_not_ends_with?: Maybe<String>;
+  purchases_every?: Maybe<PurchaseWhereInput>;
+  purchases_some?: Maybe<PurchaseWhereInput>;
+  purchases_none?: Maybe<PurchaseWhereInput>;
   AND?: Maybe<UserWhereInput[] | UserWhereInput>;
   OR?: Maybe<UserWhereInput[] | UserWhereInput>;
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
@@ -255,115 +287,129 @@ export type UserWhereUniqueInput = AtLeastOne<{
   email?: Maybe<String>;
 }>;
 
-export interface PostCreateInput {
+export interface PurchaseCreateInput {
   id?: Maybe<ID_Input>;
   title: String;
-  published?: Maybe<Boolean>;
-  author?: Maybe<UserCreateOneWithoutPostsInput>;
+  cost: Int;
+  purchasedOn: DateTimeInput;
+  user?: Maybe<UserCreateOneWithoutPurchasesInput>;
 }
 
-export interface UserCreateOneWithoutPostsInput {
-  create?: Maybe<UserCreateWithoutPostsInput>;
+export interface UserCreateOneWithoutPurchasesInput {
+  create?: Maybe<UserCreateWithoutPurchasesInput>;
   connect?: Maybe<UserWhereUniqueInput>;
 }
 
-export interface UserCreateWithoutPostsInput {
+export interface UserCreateWithoutPurchasesInput {
   id?: Maybe<ID_Input>;
-  email?: Maybe<String>;
-  name: String;
+  email: String;
+  firstName?: Maybe<String>;
+  lastName?: Maybe<String>;
 }
 
-export interface PostUpdateInput {
+export interface PurchaseUpdateInput {
   title?: Maybe<String>;
-  published?: Maybe<Boolean>;
-  author?: Maybe<UserUpdateOneWithoutPostsInput>;
+  cost?: Maybe<Int>;
+  purchasedOn?: Maybe<DateTimeInput>;
+  user?: Maybe<UserUpdateOneWithoutPurchasesInput>;
 }
 
-export interface UserUpdateOneWithoutPostsInput {
-  create?: Maybe<UserCreateWithoutPostsInput>;
-  update?: Maybe<UserUpdateWithoutPostsDataInput>;
-  upsert?: Maybe<UserUpsertWithoutPostsInput>;
+export interface UserUpdateOneWithoutPurchasesInput {
+  create?: Maybe<UserCreateWithoutPurchasesInput>;
+  update?: Maybe<UserUpdateWithoutPurchasesDataInput>;
+  upsert?: Maybe<UserUpsertWithoutPurchasesInput>;
   delete?: Maybe<Boolean>;
   disconnect?: Maybe<Boolean>;
   connect?: Maybe<UserWhereUniqueInput>;
 }
 
-export interface UserUpdateWithoutPostsDataInput {
+export interface UserUpdateWithoutPurchasesDataInput {
   email?: Maybe<String>;
-  name?: Maybe<String>;
+  firstName?: Maybe<String>;
+  lastName?: Maybe<String>;
 }
 
-export interface UserUpsertWithoutPostsInput {
-  update: UserUpdateWithoutPostsDataInput;
-  create: UserCreateWithoutPostsInput;
+export interface UserUpsertWithoutPurchasesInput {
+  update: UserUpdateWithoutPurchasesDataInput;
+  create: UserCreateWithoutPurchasesInput;
 }
 
-export interface PostUpdateManyMutationInput {
+export interface PurchaseUpdateManyMutationInput {
   title?: Maybe<String>;
-  published?: Maybe<Boolean>;
+  cost?: Maybe<Int>;
+  purchasedOn?: Maybe<DateTimeInput>;
 }
 
 export interface UserCreateInput {
   id?: Maybe<ID_Input>;
-  email?: Maybe<String>;
-  name: String;
-  posts?: Maybe<PostCreateManyWithoutAuthorInput>;
+  email: String;
+  firstName?: Maybe<String>;
+  lastName?: Maybe<String>;
+  purchases?: Maybe<PurchaseCreateManyWithoutUserInput>;
 }
 
-export interface PostCreateManyWithoutAuthorInput {
-  create?: Maybe<PostCreateWithoutAuthorInput[] | PostCreateWithoutAuthorInput>;
-  connect?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
+export interface PurchaseCreateManyWithoutUserInput {
+  create?: Maybe<
+    PurchaseCreateWithoutUserInput[] | PurchaseCreateWithoutUserInput
+  >;
+  connect?: Maybe<PurchaseWhereUniqueInput[] | PurchaseWhereUniqueInput>;
 }
 
-export interface PostCreateWithoutAuthorInput {
+export interface PurchaseCreateWithoutUserInput {
   id?: Maybe<ID_Input>;
   title: String;
-  published?: Maybe<Boolean>;
+  cost: Int;
+  purchasedOn: DateTimeInput;
 }
 
 export interface UserUpdateInput {
   email?: Maybe<String>;
-  name?: Maybe<String>;
-  posts?: Maybe<PostUpdateManyWithoutAuthorInput>;
+  firstName?: Maybe<String>;
+  lastName?: Maybe<String>;
+  purchases?: Maybe<PurchaseUpdateManyWithoutUserInput>;
 }
 
-export interface PostUpdateManyWithoutAuthorInput {
-  create?: Maybe<PostCreateWithoutAuthorInput[] | PostCreateWithoutAuthorInput>;
-  delete?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
-  connect?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
-  set?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
-  disconnect?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
+export interface PurchaseUpdateManyWithoutUserInput {
+  create?: Maybe<
+    PurchaseCreateWithoutUserInput[] | PurchaseCreateWithoutUserInput
+  >;
+  delete?: Maybe<PurchaseWhereUniqueInput[] | PurchaseWhereUniqueInput>;
+  connect?: Maybe<PurchaseWhereUniqueInput[] | PurchaseWhereUniqueInput>;
+  set?: Maybe<PurchaseWhereUniqueInput[] | PurchaseWhereUniqueInput>;
+  disconnect?: Maybe<PurchaseWhereUniqueInput[] | PurchaseWhereUniqueInput>;
   update?: Maybe<
-    | PostUpdateWithWhereUniqueWithoutAuthorInput[]
-    | PostUpdateWithWhereUniqueWithoutAuthorInput
+    | PurchaseUpdateWithWhereUniqueWithoutUserInput[]
+    | PurchaseUpdateWithWhereUniqueWithoutUserInput
   >;
   upsert?: Maybe<
-    | PostUpsertWithWhereUniqueWithoutAuthorInput[]
-    | PostUpsertWithWhereUniqueWithoutAuthorInput
+    | PurchaseUpsertWithWhereUniqueWithoutUserInput[]
+    | PurchaseUpsertWithWhereUniqueWithoutUserInput
   >;
-  deleteMany?: Maybe<PostScalarWhereInput[] | PostScalarWhereInput>;
+  deleteMany?: Maybe<PurchaseScalarWhereInput[] | PurchaseScalarWhereInput>;
   updateMany?: Maybe<
-    PostUpdateManyWithWhereNestedInput[] | PostUpdateManyWithWhereNestedInput
+    | PurchaseUpdateManyWithWhereNestedInput[]
+    | PurchaseUpdateManyWithWhereNestedInput
   >;
 }
 
-export interface PostUpdateWithWhereUniqueWithoutAuthorInput {
-  where: PostWhereUniqueInput;
-  data: PostUpdateWithoutAuthorDataInput;
+export interface PurchaseUpdateWithWhereUniqueWithoutUserInput {
+  where: PurchaseWhereUniqueInput;
+  data: PurchaseUpdateWithoutUserDataInput;
 }
 
-export interface PostUpdateWithoutAuthorDataInput {
+export interface PurchaseUpdateWithoutUserDataInput {
   title?: Maybe<String>;
-  published?: Maybe<Boolean>;
+  cost?: Maybe<Int>;
+  purchasedOn?: Maybe<DateTimeInput>;
 }
 
-export interface PostUpsertWithWhereUniqueWithoutAuthorInput {
-  where: PostWhereUniqueInput;
-  update: PostUpdateWithoutAuthorDataInput;
-  create: PostCreateWithoutAuthorInput;
+export interface PurchaseUpsertWithWhereUniqueWithoutUserInput {
+  where: PurchaseWhereUniqueInput;
+  update: PurchaseUpdateWithoutUserDataInput;
+  create: PurchaseCreateWithoutUserInput;
 }
 
-export interface PostScalarWhereInput {
+export interface PurchaseScalarWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -392,37 +438,57 @@ export interface PostScalarWhereInput {
   title_not_starts_with?: Maybe<String>;
   title_ends_with?: Maybe<String>;
   title_not_ends_with?: Maybe<String>;
-  published?: Maybe<Boolean>;
-  published_not?: Maybe<Boolean>;
-  AND?: Maybe<PostScalarWhereInput[] | PostScalarWhereInput>;
-  OR?: Maybe<PostScalarWhereInput[] | PostScalarWhereInput>;
-  NOT?: Maybe<PostScalarWhereInput[] | PostScalarWhereInput>;
+  cost?: Maybe<Int>;
+  cost_not?: Maybe<Int>;
+  cost_in?: Maybe<Int[] | Int>;
+  cost_not_in?: Maybe<Int[] | Int>;
+  cost_lt?: Maybe<Int>;
+  cost_lte?: Maybe<Int>;
+  cost_gt?: Maybe<Int>;
+  cost_gte?: Maybe<Int>;
+  purchasedOn?: Maybe<DateTimeInput>;
+  purchasedOn_not?: Maybe<DateTimeInput>;
+  purchasedOn_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  purchasedOn_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  purchasedOn_lt?: Maybe<DateTimeInput>;
+  purchasedOn_lte?: Maybe<DateTimeInput>;
+  purchasedOn_gt?: Maybe<DateTimeInput>;
+  purchasedOn_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<PurchaseScalarWhereInput[] | PurchaseScalarWhereInput>;
+  OR?: Maybe<PurchaseScalarWhereInput[] | PurchaseScalarWhereInput>;
+  NOT?: Maybe<PurchaseScalarWhereInput[] | PurchaseScalarWhereInput>;
 }
 
-export interface PostUpdateManyWithWhereNestedInput {
-  where: PostScalarWhereInput;
-  data: PostUpdateManyDataInput;
+export interface PurchaseUpdateManyWithWhereNestedInput {
+  where: PurchaseScalarWhereInput;
+  data: PurchaseUpdateManyDataInput;
 }
 
-export interface PostUpdateManyDataInput {
+export interface PurchaseUpdateManyDataInput {
   title?: Maybe<String>;
-  published?: Maybe<Boolean>;
+  cost?: Maybe<Int>;
+  purchasedOn?: Maybe<DateTimeInput>;
 }
 
 export interface UserUpdateManyMutationInput {
   email?: Maybe<String>;
-  name?: Maybe<String>;
+  firstName?: Maybe<String>;
+  lastName?: Maybe<String>;
 }
 
-export interface PostSubscriptionWhereInput {
+export interface PurchaseSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
   updatedFields_contains_every?: Maybe<String[] | String>;
   updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<PostWhereInput>;
-  AND?: Maybe<PostSubscriptionWhereInput[] | PostSubscriptionWhereInput>;
-  OR?: Maybe<PostSubscriptionWhereInput[] | PostSubscriptionWhereInput>;
-  NOT?: Maybe<PostSubscriptionWhereInput[] | PostSubscriptionWhereInput>;
+  node?: Maybe<PurchaseWhereInput>;
+  AND?: Maybe<
+    PurchaseSubscriptionWhereInput[] | PurchaseSubscriptionWhereInput
+  >;
+  OR?: Maybe<PurchaseSubscriptionWhereInput[] | PurchaseSubscriptionWhereInput>;
+  NOT?: Maybe<
+    PurchaseSubscriptionWhereInput[] | PurchaseSubscriptionWhereInput
+  >;
 }
 
 export interface UserSubscriptionWhereInput {
@@ -440,50 +506,56 @@ export interface NodeNode {
   id: ID_Output;
 }
 
-export interface Post {
+export interface Purchase {
   id: ID_Output;
   title: String;
-  published: Boolean;
+  cost: Int;
+  purchasedOn: DateTimeOutput;
 }
 
-export interface PostPromise extends Promise<Post>, Fragmentable {
+export interface PurchasePromise extends Promise<Purchase>, Fragmentable {
   id: () => Promise<ID_Output>;
   title: () => Promise<String>;
-  published: () => Promise<Boolean>;
-  author: <T = UserPromise>() => T;
+  cost: () => Promise<Int>;
+  purchasedOn: () => Promise<DateTimeOutput>;
+  user: <T = UserPromise>() => T;
 }
 
-export interface PostSubscription
-  extends Promise<AsyncIterator<Post>>,
+export interface PurchaseSubscription
+  extends Promise<AsyncIterator<Purchase>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   title: () => Promise<AsyncIterator<String>>;
-  published: () => Promise<AsyncIterator<Boolean>>;
-  author: <T = UserSubscription>() => T;
+  cost: () => Promise<AsyncIterator<Int>>;
+  purchasedOn: () => Promise<AsyncIterator<DateTimeOutput>>;
+  user: <T = UserSubscription>() => T;
 }
 
-export interface PostNullablePromise
-  extends Promise<Post | null>,
+export interface PurchaseNullablePromise
+  extends Promise<Purchase | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
   title: () => Promise<String>;
-  published: () => Promise<Boolean>;
-  author: <T = UserPromise>() => T;
+  cost: () => Promise<Int>;
+  purchasedOn: () => Promise<DateTimeOutput>;
+  user: <T = UserPromise>() => T;
 }
 
 export interface User {
   id: ID_Output;
-  email?: String;
-  name: String;
+  email: String;
+  firstName?: String;
+  lastName?: String;
 }
 
 export interface UserPromise extends Promise<User>, Fragmentable {
   id: () => Promise<ID_Output>;
   email: () => Promise<String>;
-  name: () => Promise<String>;
-  posts: <T = FragmentableArray<Post>>(args?: {
-    where?: PostWhereInput;
-    orderBy?: PostOrderByInput;
+  firstName: () => Promise<String>;
+  lastName: () => Promise<String>;
+  purchases: <T = FragmentableArray<Purchase>>(args?: {
+    where?: PurchaseWhereInput;
+    orderBy?: PurchaseOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -497,10 +569,11 @@ export interface UserSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   email: () => Promise<AsyncIterator<String>>;
-  name: () => Promise<AsyncIterator<String>>;
-  posts: <T = Promise<AsyncIterator<PostSubscription>>>(args?: {
-    where?: PostWhereInput;
-    orderBy?: PostOrderByInput;
+  firstName: () => Promise<AsyncIterator<String>>;
+  lastName: () => Promise<AsyncIterator<String>>;
+  purchases: <T = Promise<AsyncIterator<PurchaseSubscription>>>(args?: {
+    where?: PurchaseWhereInput;
+    orderBy?: PurchaseOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -514,10 +587,11 @@ export interface UserNullablePromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   email: () => Promise<String>;
-  name: () => Promise<String>;
-  posts: <T = FragmentableArray<Post>>(args?: {
-    where?: PostWhereInput;
-    orderBy?: PostOrderByInput;
+  firstName: () => Promise<String>;
+  lastName: () => Promise<String>;
+  purchases: <T = FragmentableArray<Purchase>>(args?: {
+    where?: PurchaseWhereInput;
+    orderBy?: PurchaseOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -526,25 +600,25 @@ export interface UserNullablePromise
   }) => T;
 }
 
-export interface PostConnection {
+export interface PurchaseConnection {
   pageInfo: PageInfo;
-  edges: PostEdge[];
+  edges: PurchaseEdge[];
 }
 
-export interface PostConnectionPromise
-  extends Promise<PostConnection>,
+export interface PurchaseConnectionPromise
+  extends Promise<PurchaseConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<PostEdge>>() => T;
-  aggregate: <T = AggregatePostPromise>() => T;
+  edges: <T = FragmentableArray<PurchaseEdge>>() => T;
+  aggregate: <T = AggregatePurchasePromise>() => T;
 }
 
-export interface PostConnectionSubscription
-  extends Promise<AsyncIterator<PostConnection>>,
+export interface PurchaseConnectionSubscription
+  extends Promise<AsyncIterator<PurchaseConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<PostEdgeSubscription>>>() => T;
-  aggregate: <T = AggregatePostSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<PurchaseEdgeSubscription>>>() => T;
+  aggregate: <T = AggregatePurchaseSubscription>() => T;
 }
 
 export interface PageInfo {
@@ -570,35 +644,37 @@ export interface PageInfoSubscription
   endCursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface PostEdge {
-  node: Post;
+export interface PurchaseEdge {
+  node: Purchase;
   cursor: String;
 }
 
-export interface PostEdgePromise extends Promise<PostEdge>, Fragmentable {
-  node: <T = PostPromise>() => T;
+export interface PurchaseEdgePromise
+  extends Promise<PurchaseEdge>,
+    Fragmentable {
+  node: <T = PurchasePromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface PostEdgeSubscription
-  extends Promise<AsyncIterator<PostEdge>>,
+export interface PurchaseEdgeSubscription
+  extends Promise<AsyncIterator<PurchaseEdge>>,
     Fragmentable {
-  node: <T = PostSubscription>() => T;
+  node: <T = PurchaseSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregatePost {
+export interface AggregatePurchase {
   count: Int;
 }
 
-export interface AggregatePostPromise
-  extends Promise<AggregatePost>,
+export interface AggregatePurchasePromise
+  extends Promise<AggregatePurchase>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregatePostSubscription
-  extends Promise<AsyncIterator<AggregatePost>>,
+export interface AggregatePurchaseSubscription
+  extends Promise<AsyncIterator<AggregatePurchase>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
@@ -673,51 +749,54 @@ export interface BatchPayloadSubscription
   count: () => Promise<AsyncIterator<Long>>;
 }
 
-export interface PostSubscriptionPayload {
+export interface PurchaseSubscriptionPayload {
   mutation: MutationType;
-  node: Post;
+  node: Purchase;
   updatedFields: String[];
-  previousValues: PostPreviousValues;
+  previousValues: PurchasePreviousValues;
 }
 
-export interface PostSubscriptionPayloadPromise
-  extends Promise<PostSubscriptionPayload>,
+export interface PurchaseSubscriptionPayloadPromise
+  extends Promise<PurchaseSubscriptionPayload>,
     Fragmentable {
   mutation: () => Promise<MutationType>;
-  node: <T = PostPromise>() => T;
+  node: <T = PurchasePromise>() => T;
   updatedFields: () => Promise<String[]>;
-  previousValues: <T = PostPreviousValuesPromise>() => T;
+  previousValues: <T = PurchasePreviousValuesPromise>() => T;
 }
 
-export interface PostSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<PostSubscriptionPayload>>,
+export interface PurchaseSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<PurchaseSubscriptionPayload>>,
     Fragmentable {
   mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = PostSubscription>() => T;
+  node: <T = PurchaseSubscription>() => T;
   updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = PostPreviousValuesSubscription>() => T;
+  previousValues: <T = PurchasePreviousValuesSubscription>() => T;
 }
 
-export interface PostPreviousValues {
+export interface PurchasePreviousValues {
   id: ID_Output;
   title: String;
-  published: Boolean;
+  cost: Int;
+  purchasedOn: DateTimeOutput;
 }
 
-export interface PostPreviousValuesPromise
-  extends Promise<PostPreviousValues>,
+export interface PurchasePreviousValuesPromise
+  extends Promise<PurchasePreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
   title: () => Promise<String>;
-  published: () => Promise<Boolean>;
+  cost: () => Promise<Int>;
+  purchasedOn: () => Promise<DateTimeOutput>;
 }
 
-export interface PostPreviousValuesSubscription
-  extends Promise<AsyncIterator<PostPreviousValues>>,
+export interface PurchasePreviousValuesSubscription
+  extends Promise<AsyncIterator<PurchasePreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   title: () => Promise<AsyncIterator<String>>;
-  published: () => Promise<AsyncIterator<Boolean>>;
+  cost: () => Promise<AsyncIterator<Int>>;
+  purchasedOn: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 export interface UserSubscriptionPayload {
@@ -747,8 +826,9 @@ export interface UserSubscriptionPayloadSubscription
 
 export interface UserPreviousValues {
   id: ID_Output;
-  email?: String;
-  name: String;
+  email: String;
+  firstName?: String;
+  lastName?: String;
 }
 
 export interface UserPreviousValuesPromise
@@ -756,7 +836,8 @@ export interface UserPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   email: () => Promise<String>;
-  name: () => Promise<String>;
+  firstName: () => Promise<String>;
+  lastName: () => Promise<String>;
 }
 
 export interface UserPreviousValuesSubscription
@@ -764,7 +845,8 @@ export interface UserPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   email: () => Promise<AsyncIterator<String>>;
-  name: () => Promise<AsyncIterator<String>>;
+  firstName: () => Promise<AsyncIterator<String>>;
+  lastName: () => Promise<AsyncIterator<String>>;
 }
 
 /*
@@ -779,14 +861,24 @@ The `String` scalar type represents textual data, represented as UTF-8 character
 export type String = string;
 
 /*
-The `Boolean` scalar type represents `true` or `false`.
-*/
-export type Boolean = boolean;
-
-/*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
 */
 export type Int = number;
+
+/*
+DateTime scalar input type, allowing Date
+*/
+export type DateTimeInput = Date | string;
+
+/*
+DateTime scalar output type, which is always a string
+*/
+export type DateTimeOutput = string;
+
+/*
+The `Boolean` scalar type represents `true` or `false`.
+*/
+export type Boolean = boolean;
 
 export type Long = string;
 
@@ -800,7 +892,7 @@ export const models: Model[] = [
     embedded: false
   },
   {
-    name: "Post",
+    name: "Purchase",
     embedded: false
   }
 ];

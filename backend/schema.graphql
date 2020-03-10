@@ -1,25 +1,26 @@
 type Query {
-  publishedPosts: [Post!]!
-  post(postId: ID!): Post
-  postsByUser(userId: ID!): [Post!]!
+  purchase(purchaseId: ID!): Purchase
+  purchasesByUser(userId: ID!): [Purchases!]!
+  user(userId: ID!): User
 }
 
 type Mutation {
-  createUser(name: String!): User
-  createDraft(title: String!, userId: ID!): Post
-  publish(postId: ID!): Post
+  createUser(email: String!, firstName: String, lastName: String): User
+  createPurchase(title: String!, userId: ID!, purchasedOn: DateTime!): Purchase
 }
 
 type User {
   id: ID!
-  email: String
-  name: String!
-  posts: [Post!]!
+  email: String!
+  firstName: String
+  lastName: String
+  purchases: [Purchase!]!
 }
 
-type Post {
+type Purchase {
   id: ID!
   title: String!
-  published: Boolean!
-  author: User
+  cost: Int!
+  purchasedOn: DateTime!
+  user: User!
 }
