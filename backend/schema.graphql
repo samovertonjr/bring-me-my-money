@@ -1,26 +1,26 @@
 type Query {
-  purchase(purchaseId: ID!): Purchase
-  purchasesByUser(userId: ID!): [Purchases!]!
+  # purchase(purchaseId: ID!): Purchase
+  # purchasesByUser(userId: ID!): [Purchase!]!
   user(userId: ID!): User
 }
 
-type Mutation {
-  createUser(email: String!, firstName: String, lastName: String): User
-  createPurchase(title: String!, userId: ID!, purchasedOn: DateTime!): Purchase
-}
+# type Mutation {
+#   # createUser(email: String!, firstName: String, lastName: String): User
+#   # createPurchase(title: String!, userId: ID!, purchasedOn: DateTime!): Purchase
+# }
 
 type User {
   id: ID!
   email: String!
   firstName: String
   lastName: String
-  purchases: [Purchase!]!
+  # purchases: [Purchase!]!
 }
 
-type Purchase {
-  id: ID!
-  title: String!
-  cost: Int!
-  purchasedOn: DateTime!
-  user: User!
-}
+# type Purchase {
+#   id: ID!
+#   title: String!
+#   cost: Int!
+#   purchasedOn: DateTime!
+#   user: User!
+# }

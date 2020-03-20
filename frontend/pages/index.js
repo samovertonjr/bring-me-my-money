@@ -1,7 +1,7 @@
 import Head from "next/head";
 import fetch from "isomorphic-unfetch";
 
-function Home({ purchases }) {
+function Home({ user }) {
   return (
     <div className="container">
       <Head>
@@ -17,15 +17,9 @@ function Home({ purchases }) {
         </p>
 
         <div className="grid">
-          <h3>All Purchases</h3>
+          <h3>Current User</h3>
           <ul>
-            {purchases.map(purchase => {
-              return (
-                <li key={purchase.id}>
-                  {purchase.name}, ${purchase.price}
-                </li>
-              );
-            })}
+            {user.firstName} {user.lastName} -- {user.email}
           </ul>
         </div>
       </main>
@@ -185,28 +179,24 @@ function Home({ purchases }) {
   );
 }
 
-const ALL_PURCHASES_QUERY = `
-  query GetAllPurchases {
-    purchases {
-      name
-      price
+const USER_QUERY = `
+  query getUser {
+    user(userId: "jacob@uscca.com") {
       id
-      user {
-        first_name
-        last_name
-      }
+      email
+      firstName
+      lastName
     }
   }
 `;
 
 Home.getInitialProps = async ctx => {
-  const res = await fetch("https://jw-hasura-demo.herokuapp.com/v1/graphql", {
+  const res = await fetch("http://localhost:4000", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
-      "x-hasura-admin-secret": "WMQ6Zmw7PbuYMwXUAhR6ppNjyr89gFZy"
+      "Content-Type": "application/json"
     },
-    body: JSON.stringify({ query: ALL_PURCHASES_QUERY })
+    body: JSON.stringify({ query: USER_QUERY })
   });
 
   const json = await res.json();
