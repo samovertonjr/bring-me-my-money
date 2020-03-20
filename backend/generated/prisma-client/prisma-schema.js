@@ -56,7 +56,7 @@ type Purchase {
   title: String!
   cost: Int!
   purchasedOn: DateTime!
-  user: User
+  user: User!
 }
 
 type PurchaseConnection {
@@ -70,7 +70,7 @@ input PurchaseCreateInput {
   title: String!
   cost: Int!
   purchasedOn: DateTime!
-  user: UserCreateOneWithoutPurchasesInput
+  user: UserCreateOneWithoutPurchasesInput!
 }
 
 input PurchaseCreateManyWithoutUserInput {
@@ -180,7 +180,7 @@ input PurchaseUpdateInput {
   title: String
   cost: Int
   purchasedOn: DateTime
-  user: UserUpdateOneWithoutPurchasesInput
+  user: UserUpdateOneRequiredWithoutPurchasesInput
 }
 
 input PurchaseUpdateManyDataInput {
@@ -302,7 +302,7 @@ type Subscription {
 type User {
   id: ID!
   email: String!
-  firstName: String
+  firstName: String!
   lastName: String
   purchases(where: PurchaseWhereInput, orderBy: PurchaseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Purchase!]
 }
@@ -316,7 +316,7 @@ type UserConnection {
 input UserCreateInput {
   id: ID
   email: String!
-  firstName: String
+  firstName: String!
   lastName: String
   purchases: PurchaseCreateManyWithoutUserInput
 }
@@ -329,7 +329,7 @@ input UserCreateOneWithoutPurchasesInput {
 input UserCreateWithoutPurchasesInput {
   id: ID
   email: String!
-  firstName: String
+  firstName: String!
   lastName: String
 }
 
@@ -352,7 +352,7 @@ enum UserOrderByInput {
 type UserPreviousValues {
   id: ID!
   email: String!
-  firstName: String
+  firstName: String!
   lastName: String
 }
 
@@ -387,12 +387,10 @@ input UserUpdateManyMutationInput {
   lastName: String
 }
 
-input UserUpdateOneWithoutPurchasesInput {
+input UserUpdateOneRequiredWithoutPurchasesInput {
   create: UserCreateWithoutPurchasesInput
   update: UserUpdateWithoutPurchasesDataInput
   upsert: UserUpsertWithoutPurchasesInput
-  delete: Boolean
-  disconnect: Boolean
   connect: UserWhereUniqueInput
 }
 

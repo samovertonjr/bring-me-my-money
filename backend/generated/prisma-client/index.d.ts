@@ -292,7 +292,7 @@ export interface PurchaseCreateInput {
   title: String;
   cost: Int;
   purchasedOn: DateTimeInput;
-  user?: Maybe<UserCreateOneWithoutPurchasesInput>;
+  user: UserCreateOneWithoutPurchasesInput;
 }
 
 export interface UserCreateOneWithoutPurchasesInput {
@@ -303,7 +303,7 @@ export interface UserCreateOneWithoutPurchasesInput {
 export interface UserCreateWithoutPurchasesInput {
   id?: Maybe<ID_Input>;
   email: String;
-  firstName?: Maybe<String>;
+  firstName: String;
   lastName?: Maybe<String>;
 }
 
@@ -311,15 +311,13 @@ export interface PurchaseUpdateInput {
   title?: Maybe<String>;
   cost?: Maybe<Int>;
   purchasedOn?: Maybe<DateTimeInput>;
-  user?: Maybe<UserUpdateOneWithoutPurchasesInput>;
+  user?: Maybe<UserUpdateOneRequiredWithoutPurchasesInput>;
 }
 
-export interface UserUpdateOneWithoutPurchasesInput {
+export interface UserUpdateOneRequiredWithoutPurchasesInput {
   create?: Maybe<UserCreateWithoutPurchasesInput>;
   update?: Maybe<UserUpdateWithoutPurchasesDataInput>;
   upsert?: Maybe<UserUpsertWithoutPurchasesInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
   connect?: Maybe<UserWhereUniqueInput>;
 }
 
@@ -343,7 +341,7 @@ export interface PurchaseUpdateManyMutationInput {
 export interface UserCreateInput {
   id?: Maybe<ID_Input>;
   email: String;
-  firstName?: Maybe<String>;
+  firstName: String;
   lastName?: Maybe<String>;
   purchases?: Maybe<PurchaseCreateManyWithoutUserInput>;
 }
@@ -544,7 +542,7 @@ export interface PurchaseNullablePromise
 export interface User {
   id: ID_Output;
   email: String;
-  firstName?: String;
+  firstName: String;
   lastName?: String;
 }
 
@@ -827,7 +825,7 @@ export interface UserSubscriptionPayloadSubscription
 export interface UserPreviousValues {
   id: ID_Output;
   email: String;
-  firstName?: String;
+  firstName: String;
   lastName?: String;
 }
 

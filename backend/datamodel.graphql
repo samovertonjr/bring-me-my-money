@@ -11,5 +11,5 @@ type Purchase {
   title: String!
   cost: Int!
   purchasedOn: DateTime!
-  user: User @relation(link: INLINE)
+  user: User! @relation(link: INLINE)
 }
