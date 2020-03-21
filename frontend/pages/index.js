@@ -3,178 +3,52 @@ import fetch from "isomorphic-unfetch";
 
 function Home({ user }) {
   return (
-    <div className="container">
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main>
-        <h1 className="title">Test</h1>
-
-        <p className="description">
-          Get started by editing <code>pages/index.js</code>
-        </p>
-
-        <div className="grid">
-          <h3>Current User</h3>
-          <ul>
-            {user.firstName} {user.lastName} -- {user.email}
-          </ul>
+    <div className="bg-gray-50 pt-12 sm:pt-16">
+      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl leading-9 font-extrabold text-gray-900 sm:text-4xl sm:leading-10">
+            Prisma + Tailwind Proof of Concept
+          </h2>
+          <p className="mt-3 text-xl leading-7 text-gray-500 sm:mt-4">
+            {user.firstName} {user.lastName} ~ {user.email}
+          </p>
         </div>
-      </main>
-
-      <footer>
-        <a
-          href="https://zeit.co?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by <img src="/zeit.svg" alt="ZEIT Logo" />
-        </a>
-      </footer>
-
-      <style jsx>{`
-        .container {
-          min-height: 100vh;
-          padding: 0 0.5rem;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
-
-        main {
-          padding: 5rem 0;
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
-
-        footer {
-          width: 100%;
-          height: 100px;
-          border-top: 1px solid #eaeaea;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        footer img {
-          margin-left: 0.5rem;
-        }
-
-        footer a {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        a {
-          color: inherit;
-          text-decoration: none;
-        }
-
-        .title a {
-          color: #0070f3;
-          text-decoration: none;
-        }
-
-        .title a:hover,
-        .title a:focus,
-        .title a:active {
-          text-decoration: underline;
-        }
-
-        .title {
-          margin: 0;
-          line-height: 1.15;
-          font-size: 4rem;
-        }
-
-        .title,
-        .description {
-          text-align: center;
-        }
-
-        .description {
-          line-height: 1.5;
-          font-size: 1.5rem;
-        }
-
-        code {
-          background: #fafafa;
-          border-radius: 5px;
-          padding: 0.75rem;
-          font-size: 1.1rem;
-          font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
-            DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
-        }
-
-        .grid {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-wrap: wrap;
-
-          max-width: 800px;
-          margin-top: 3rem;
-        }
-
-        .card {
-          margin: 1rem;
-          flex-basis: 45%;
-          padding: 1.5rem;
-          text-align: left;
-          color: inherit;
-          text-decoration: none;
-          border: 1px solid #eaeaea;
-          border-radius: 10px;
-          transition: color 0.15s ease, border-color 0.15s ease;
-        }
-
-        .card:hover,
-        .card:focus,
-        .card:active {
-          color: #0070f3;
-          border-color: #0070f3;
-        }
-
-        .card h3 {
-          margin: 0 0 1rem 0;
-          font-size: 1.5rem;
-        }
-
-        .card p {
-          margin: 0;
-          font-size: 1.25rem;
-          line-height: 1.5;
-        }
-
-        @media (max-width: 600px) {
-          .grid {
-            width: 100%;
-            flex-direction: column;
-          }
-        }
-      `}</style>
-
-      <style jsx global>{`
-        html,
-        body {
-          padding: 0;
-          margin: 0;
-          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-            Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-            sans-serif;
-        }
-
-        * {
-          box-sizing: border-box;
-        }
-      `}</style>
+      </div>
+      <div className="mt-10 pb-12 bg-white sm:pb-16">
+        <div className="relative">
+          <div className="absolute inset-0 h-1/2 bg-gray-50"></div>
+          <div className="relative max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-4xl mx-auto">
+              <div className="rounded-lg bg-white shadow-lg sm:grid sm:grid-cols-3">
+                <div className="border-b border-gray-100 p-6 text-center sm:border-0 sm:border-r">
+                  <p className="text-5xl leading-none font-extrabold text-indigo-600">
+                    100%
+                  </p>
+                  <p className="mt-2 text-lg leading-6 font-medium text-gray-500">
+                    Pepperoni
+                  </p>
+                </div>
+                <div className="border-t border-b border-gray-100 p-6 text-center sm:border-0 sm:border-l sm:border-r">
+                  <p className="text-5xl leading-none font-extrabold text-indigo-600">
+                    24/7
+                  </p>
+                  <p className="mt-2 text-lg leading-6 font-medium text-gray-500">
+                    Delivery
+                  </p>
+                </div>
+                <div className="border-t border-gray-100 p-6 text-center sm:border-0 sm:border-l">
+                  <p className="text-5xl leading-none font-extrabold text-indigo-600">
+                    100k
+                  </p>
+                  <p className="mt-2 text-lg leading-6 font-medium text-gray-500">
+                    Calories
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -200,7 +74,6 @@ Home.getInitialProps = async ctx => {
   });
 
   const json = await res.json();
-  console.log("🐸", json);
   return json.data;
 };
 
