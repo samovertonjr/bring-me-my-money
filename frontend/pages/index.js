@@ -1,7 +1,44 @@
-import Head from "next/head";
-import fetch from "isomorphic-unfetch";
+import gql from "graphql-tag";
+import { useQuery } from "@apollo/react-hooks";
+import withApollo from "../lib/withApollo";
 
-function Home({ user }) {
+const USER_QUERY = gql`
+  query getUser {
+    user(userId: "jacob@uscca.com") {
+      id
+      email
+      firstName
+      lastName
+    }
+  }
+`;
+
+function Home() {
+  const { loading, error, data } = useQuery(USER_QUERY);
+  const { user } = data || {};
+
+  if (loading) {
+    return <h1>🐸 Loading…</h1>;
+  }
+
+  if (error) {
+    if (error.networkError.result) {
+      return (
+        <pre>
+          {error.networkError.result.errors.map(({ message }, i) => (
+            <span key={i}>{message}</span>
+          ))}
+        </pre>
+      );
+    } else {
+      return (
+        <pre>
+          <span>{error.message}</span>
+        </pre>
+      );
+    }
+  }
+
   return (
     <div className="bg-gray-50 pt-12 sm:pt-16">
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -21,28 +58,16 @@ function Home({ user }) {
             <div className="max-w-4xl mx-auto">
               <div className="rounded-lg bg-white shadow-lg sm:grid sm:grid-cols-3">
                 <div className="border-b border-gray-100 p-6 text-center sm:border-0 sm:border-r">
-                  <p className="text-5xl leading-none font-extrabold text-indigo-600">
-                    100%
-                  </p>
-                  <p className="mt-2 text-lg leading-6 font-medium text-gray-500">
-                    Pepperoni
-                  </p>
+                  <p className="text-5xl leading-none font-extrabold text-indigo-600">100%</p>
+                  <p className="mt-2 text-lg leading-6 font-medium text-gray-500">Pepperoni</p>
                 </div>
                 <div className="border-t border-b border-gray-100 p-6 text-center sm:border-0 sm:border-l sm:border-r">
-                  <p className="text-5xl leading-none font-extrabold text-indigo-600">
-                    24/7
-                  </p>
-                  <p className="mt-2 text-lg leading-6 font-medium text-gray-500">
-                    Delivery
-                  </p>
+                  <p className="text-5xl leading-none font-extrabold text-indigo-600">24/7</p>
+                  <p className="mt-2 text-lg leading-6 font-medium text-gray-500">Delivery</p>
                 </div>
                 <div className="border-t border-gray-100 p-6 text-center sm:border-0 sm:border-l">
-                  <p className="text-5xl leading-none font-extrabold text-indigo-600">
-                    100k
-                  </p>
-                  <p className="mt-2 text-lg leading-6 font-medium text-gray-500">
-                    Calories
-                  </p>
+                  <p className="text-5xl leading-none font-extrabold text-indigo-600">100k</p>
+                  <p className="mt-2 text-lg leading-6 font-medium text-gray-500">Calories</p>
                 </div>
               </div>
             </div>
@@ -53,28 +78,16 @@ function Home({ user }) {
   );
 }
 
-const USER_QUERY = `
-  query getUser {
-    user(userId: "jacob@uscca.com") {
-      id
-      email
-      firstName
-      lastName
-    }
-  }
-`;
+// Home.getInitialProps = async (ctx) => {
+//   // const res = await fetch("http://localhost:4000", {
+//   //   method: "POST",
+//   //   headers: {
+//   //     "Content-Type": "application/json",
+//   //   },
+//   //   body: JSON.stringify({ query: USER_QUERY }),
+//   // });
+//   // const json = await res.json();
+//   // return json.data;
+// };
 
-Home.getInitialProps = async ctx => {
-  const res = await fetch("http://localhost:4000", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ query: USER_QUERY })
-  });
-
-  const json = await res.json();
-  return json.data;
-};
-
-export default Home;
+export default withApollo(Home);
